@@ -1,3 +1,5 @@
+//working from laptop
+
 import { WORDS } from "./words.js";
 
 const NUMBER_OF_GUESSES = 6;
