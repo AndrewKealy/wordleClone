@@ -8,11 +8,11 @@ h1 {
 }
 
 .letter-box {
-  border: 2px solid gray;
-  border-radius: 3px;
+  border: 2.5px solid 	#787c7f;
   margin: 2px;
   font-size: 2.5rem;
   font-weight: 700;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
   height: 3rem;
   width: 3rem;
   display: flex;
@@ -22,7 +22,7 @@ h1 {
 }
 
 .filled-box {
-  border: 2px solid black;
+  border: 2.5px solid 	#787c7f;
 }
 
 .letter-row {
@@ -51,4 +51,18 @@ h1 {
   margin: 0 2px;
   cursor: pointer;
   text-transform: uppercase;
+}
+
+#overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
 }

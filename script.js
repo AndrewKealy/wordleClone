@@ -10,6 +10,9 @@ let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
 console.log(rightGuessString)
 
 function initBoard() {
+    overlayOff();
+    let dismissOverlayButton = document.getElementById("dismissOverlayButton");
+    dismissOverlayButton.addEventListener("click", overlayOff);
     let board = document.getElementById("game-board");
 
     for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
@@ -100,6 +103,7 @@ function checkGuess () {
     
     for (let i = 0; i < 5; i++) {
         let letterColor = ''
+        let borderColor = 	'#787c7f';
         let box = row.children[i]
         let letter = currentGuess[i]
         
@@ -114,20 +118,24 @@ function checkGuess () {
             if (currentGuess[i] === rightGuess[i]) {
                 // shade green 
                 letterColor = '#6ca965'
+                borderColor = '#6ca965'
             } else {
                 // shade box yellow
                 letterColor = '#c8b653'
+                borderColor = '#c8b653'
             }
 
             rightGuess[letterPosition] = "#"
         }
 
-        let delay = 1000 * i
+        let delay = 500 * i
         setTimeout(()=> {
             //flip box
             animateCSS(box, 'flipInX')
             //shade box
-            box.style.backgroundColor = letterColor
+            box.style.backgroundColor = letterColor;
+            box.style.border =  '2.5px solid ' + borderColor;
+            box.style.color = 'white';
             shadeKeyBoard(letter, letterColor)
         }, delay)
     }
@@ -135,6 +143,7 @@ function checkGuess () {
     if (guessString === rightGuessString) {
         toastr.success("You guessed right! Game over!")
         guessesRemaining = 0
+        overlayOn();
         return
     } else {
         guessesRemaining -= 1;
@@ -144,6 +153,7 @@ function checkGuess () {
         if (guessesRemaining === 0) {
             toastr.error("You've run out of guesses! Game over!")
             toastr.info(`The right word was: "${rightGuessString}"`)
+            overlayOn();
         }
     }
 }
@@ -187,7 +197,7 @@ const animateCSS = (element, animation, prefix = 'animate__') =>
     const animationName = `${prefix}${animation}`;
     // const node = document.querySelector(element);
     const node = element
-    node.style.setProperty('--animate-duration', '0.3s');
+    node.style.setProperty('--animate-duration', '0.5s');
     
     node.classList.add(`${prefix}animated`, animationName);
 
@@ -200,3 +210,11 @@ const animateCSS = (element, animation, prefix = 'animate__') =>
 
     node.addEventListener('animationend', handleAnimationEnd, {once: true});
 });
+
+function overlayOn() {
+    document.getElementById("overlay").style.display = "block";
+  }
+  
+  function overlayOff() {
+    document.getElementById("overlay").style.display = "none";
+  }
