@@ -3,11 +3,21 @@
 import { WORDS } from "./words.js";
 
 const NUMBER_OF_GUESSES = 6;
-let guessesRemaining = NUMBER_OF_GUESSES;
-let currentGuess = [];
-let nextLetter = 0;
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
-console.log(rightGuessString)
+let guessesRemaining;
+let currentGuess;
+let nextLetter;
+let rightGuessString;
+let guesses;
+
+
+function initParams() {
+    guessesRemaining = NUMBER_OF_GUESSES;
+    currentGuess = [];
+     nextLetter = 0;
+    rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
+    guesses = [];
+    console.log(rightGuessString)
+}
 
 function initBoard() {
     overlayOff();
@@ -27,9 +37,23 @@ function initBoard() {
 
         board.appendChild(row)
     }
+    for(guess in guesses) {
+        currentGuess = guess;
+        checkGuess();
+    }
 }
 
+function clearBoard() {
+    let board = document.getElementById("game-board");
+    $("div.letter-row").remove();
+    $("div.letter-box").remove();
+
+}
+
+clearBoard();
+initParams();
 initBoard()
+scheduleNewWord('21:07', clearBoard, initParams, initBoard);
 
 
 document.addEventListener("keyup", (e) => {
@@ -67,7 +91,6 @@ function insertLetter (pressedKey) {
     let box = row.children[nextLetter]
     animateCSS(box, "pulse")
     box.textContent = pressedKey
-    box.classList.add("filled-box")
     currentGuess.push(pressedKey)
     nextLetter += 1
 }
@@ -100,7 +123,6 @@ function checkGuess () {
         return
     }
 
-    
     for (let i = 0; i < 5; i++) {
         let letterColor = ''
         let borderColor = 	'#787c7f';
@@ -218,3 +240,34 @@ function overlayOn() {
   function overlayOff() {
     document.getElementById("overlay").style.display = "none";
   }
+
+
+ function  scheduleNewWord(time, triggerThis1, triggerThis2, triggerThis3) {
+
+    // get hour and minute from hour:minute param received, ex.: '16:00'
+    const hour = Number(time.split(':')[0]);
+    const minute = Number(time.split(':')[1]);
+
+    // create a Date object at the desired timepoint
+    const startTime = new Date(); startTime.setHours(hour, minute);
+    const now = new Date();
+
+    // increase timepoint by 24 hours if in the past
+    if (startTime.getTime() < now.getTime()) {
+      startTime.setHours(startTime.getHours() + 24);
+    }
+
+    // get the interval in ms from now to the timepoint when to trigger the alarm
+    const firstTriggerAfterMs = startTime.getTime() - now.getTime();
+
+    // trigger the function triggerThis() at the timepoint
+    // create setInterval when the timepoint is reached to trigger it every day at this timepoint
+    setTimeout(function(){
+      triggerThis1();
+      triggerThis2()
+      triggerThis3()
+      setInterval(triggerThis1, triggerThis2, triggerThis3, 24 * 60 * 60 * 1000);
+    }, firstTriggerAfterMs);
+
+  }
+  
